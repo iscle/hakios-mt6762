@@ -71,6 +71,7 @@ require(config_sha == '45d3f861cd0ab4e46e4361eba147c1801978bebc088f72b8a114cc44d
         'Baseline root configuration differs from desktop-bootstrap-build2-root')
 inputs = files(repo / 'userland/src') + files(repo / 'userland/libmini') + config
 inputs += [repo / 'devices/mt6762/build-userland.sh', repo / 'userland/com.hakios.demo.plist',
+           repo / 'devices/mt6762/bootdiag.c',
            repo / 'userland/rc.launchd', version_path, sdk / 'SDKSettings.plist',
            xnu / 'tools/mt6762/boot/desktop_bootstrap.c',
            xnu / 'tools/mt6762/boot/test_desktop_entry.py',
@@ -92,6 +93,7 @@ for directory in ('sbin', 'bin', 'lib', 'etc', 'share', 'LaunchDaemons', 'dev',
 obj.mkdir()
 shutil.copytree(repo / 'userland/src', source / 'src')
 shutil.copytree(repo / 'userland/libmini', source / 'libmini')
+shutil.copy2(repo / 'devices/mt6762/bootdiag.c', source / 'src/mt6762_bootdiag.c')
 for name, path in [('desktop_bootstrap.c', xnu / 'tools/mt6762/boot/desktop_bootstrap.c'),
                    ('battery_probe.c', xnu / 'tools/mt6762/hardware/power/battery_probe.c')]:
     shutil.copy2(path, source / name)
@@ -128,8 +130,9 @@ for name, frameworks in [('hello_dyn', []), ('rwtouch', []),
 run(dynamic + ['-framework', 'CoreFoundation', '-framework', 'IOKit', '-o',
                root / 'bin/battery_probe', source / 'battery_probe.c'])
 libraries = [
+    ('libhakios.bootdiag.dylib', ['mt6762_bootdiag.c'], [], False),
     ('libhakios.dylib', ['inject.c'], ['CoreFoundation', 'IOKit'], True),
-    ('libhakios.sb.dylib', ['inject_sb.c'], ['CoreFoundation', 'IOKit'], True),
+    ('libhakios.sb.dylib', ['inject_sb.c', 'mt6762_bootdiag.c'], ['CoreFoundation', 'IOKit'], True),
     ('libhakios.media.dylib', ['inject_media.c', 'camera_device.c', 'camera_isp.c'],
      ['CoreFoundation', 'CoreMedia', 'CoreVideo', 'IOSurface'], True),
     ('libhakios.app.dylib', ['inject_app.c'], [], True),
@@ -147,6 +150,7 @@ shutil.copy2(repo / 'userland/rc.launchd', root / 'etc/rc')
 (root / 'etc/inject.conf').write_text(
     '/redwood/lib/libhakios.dylib backboardd containermanagerd containermanagerd_system\n'
     '/redwood/lib/libhakios.sb.dylib SpringBoard\n'
+    '/redwood/lib/libhakios.bootdiag.dylib lsd\n'
     '/redwood/lib/libhakios.media.dylib mediaserverd\n'
     '/redwood/lib/libhakios.app.dylib Sileo\n'
     '/redwood/lib/libhakios.tweaks.dylib Preferences\n')
@@ -269,6 +273,9 @@ report = dict(profile='MT6762-20F66-hakios-userland-v1', result='PASS',
     runtime_prefix='/redwood', touch_device='/dev/hakios-touch', namespace='kern.hakios',
     source_inputs_stable=True, inputs_sha256=before, commands=commands,
     target='arm64-apple-ios16.5 -mcpu=cortex-a53 -mno-outline-atomics',
+    startup_observer=dict(processes=['SpringBoard','lsd'], samples=32, interval_seconds=20,
+                          other_threads_maximum=32, other_threads_sample_indices=[0,3,6],
+                          suspends_threads=False, apple_code_modified=False, atomic_stack=False),
     project_binary_instruction_counts=instruction_counts,
     a53_compatible_hint_nops=hint_nops,
     tests=dict(battery_unknown_hooks='PASS', touch_header_abi='PASS', bootstrap_sp_alignment='PASS',

@@ -1,0 +1,91 @@
+{
+  "format": 1,
+  "image": "Image43/normal35/kernel56/helper2",
+  "capture": "capture37",
+  "kernel_sha256": "bcc01522daf9bb430e8fd8df3d2b29a34bc3bf52674b978d936520eee1def60b",
+  "log_sha256": "3d8c225b818ba584f5291ba73253d9494bba390cc7bc06b3966744633e68a8ee",
+  "log_bytes": 381579,
+  "source_log": "/home/iscle/mt6762-ios-port/hardware/trace-boot-20261025/capture37/xnu-log.bin",
+  "secondary_cpus_online": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "milestones": {
+    "window_server": {
+      "line": 1911,
+      "text": "1970-01-01 01:04:39.715385+0100 backboardd[11:241] [Common]       window server ready in 12.462s. overall 39.1691s"
+    },
+    "text_console_release": {
+      "line": 2000,
+      "text": "mt6762-present: text console released; first drawable layer 1125x2436 panel=384x854"
+    },
+    "drawable_copy": {
+      "line": 2001,
+      "text": "mt6762-present: first drawable layer copy complete"
+    },
+    "system_shell": {
+      "line": 2040,
+      "text": "1970-01-01 01:04:44.541563+0100 backboardd[11:241] [SystemShell] System shell connected: <BKSystemShellClient: 0x10131d010; bundleIdentifier: com.apple.springboard; bundlePath: /System/Library/CoreServices/SpringBoard.app; jobLabel: com.apple.SpringBoard; pid: 8; systemIdleSleepInterval: 3.00; watchdogType: shell; connection: <(null):0x10120e4d0>>"
+    },
+    "last_springboard": {
+      "line": 2080,
+      "text": "1970-01-01 01:04:47.231424+0100 SpringBoard[8:219] invalid product id '(null)'"
+    },
+    "touch": {
+      "line": 2978,
+      "text": "1970-01-01 01:05:40.356604+0100 backboardd[11:667] [TouchEvents] contact 1 presence: touching"
+    }
+  },
+  "first270seconds": {
+    "lab": 0,
+    "sectors": 814983,
+    "bytes": 417271296,
+    "wall_us": 270004203,
+    "read_us": 260312031,
+    "read_max_us": 6364,
+    "admissions": 5704888,
+    "full": 258064,
+    "reused": 5446824,
+    "full_us": 41354903,
+    "full_max_us": 283,
+    "slow_full": 0,
+    "admission_errors": 0,
+    "clock_reverse": 0
+  },
+  "storage_fraction_first270seconds": 0.9641036254535638,
+  "storage_mib_per_active_second": 1.528707361085243,
+  "last_storage_sample": {
+    "lab": 0,
+    "sectors": 1085553,
+    "bytes": 555803136,
+    "wall_us": 777161051,
+    "read_us": 346889510,
+    "read_max_us": 6364,
+    "admissions": 7598878,
+    "full": 344154,
+    "reused": 7254724,
+    "full_us": 55158733,
+    "full_max_us": 283,
+    "slow_full": 0,
+    "admission_errors": 0,
+    "clock_reverse": 0
+  },
+  "framebuffer": {
+    "path": "/home/iscle/mt6762-ios-port/hardware/trace-boot-20261025/capture37/framebuffer.png",
+    "sha256": "0e2c38215850b84e78cdd35270efeb021018db90dc485dfadd115dc6108eb205",
+    "observation": "White Apple logo on black; no home screen",
+    "physical_panel_visibility": "Not independently confirmed at time of framebuffer capture"
+  },
+  "physical_home_screen_proven": false,
+  "limitations": [
+    "Retained RAM log may omit cache-resident tail at reset",
+    "No SpringBoard stack sample in this image",
+    "CPU online messages establish startup, not utilization or highest clock state",
+    "Storage bottleneck explains early startup; persistent logo after I/O subsides needs a separate thread-state observation"
+  ]
+}

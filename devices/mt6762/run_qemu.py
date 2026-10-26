@@ -75,7 +75,7 @@ def validate_userland(directory):
             'Migrated helper root changed after validation')
     # Bind selected source helpers to this monorepo, not an old root bearing a new label.
     inputs = evidence.get('inputs_sha256', {})
-    for relative in ('devices/mt6762/build-userland.sh', 'userland/src/init.c',
+    for relative in ('devices/mt6762/build-userland.sh', 'devices/mt6762/bootdiag.c', 'userland/src/init.c',
                      'userland/src/inject.c', 'userland/src/inject_sb.c',
                      'userland/src/hakios.input.h',
                      'xnu-src/xnu-8796.121.2/bsd/sys/hakios.input.h',
