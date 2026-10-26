@@ -1,0 +1,3 @@
+# Serialized diff context must retain its leading spaces and original bytes.
+# Check actual kernel source whitespace in the nested checkout instead.
+xnu.patch -whitespace

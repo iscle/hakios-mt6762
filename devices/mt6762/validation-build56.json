@@ -1,0 +1,73 @@
+{
+  "format": 1,
+  "upstream_commit": "88513176b1e96ecf0b764cd62c6f4e6ac71345e3",
+  "kernel_build": {
+    "sha256": "bcc01522daf9bb430e8fd8df3d2b29a34bc3bf52674b978d936520eee1def60b",
+    "source_head": "16bb6b3dadc19849f12855d064e1ba825e6d6de8",
+    "kernel_source_sha256": "61d1e2cbe7c8d01b4979f43d0b9ab88257f44cb44304c1ca91168fa03669256d",
+    "build_inputs_sha256": "361962238c9b6760eb60747735738e141cdf76975212860072efb925508865ab",
+    "make_exit_code": 0,
+    "all_checks_passed": true,
+    "new_link_observed": true,
+    "source_unchanged_during_build": true,
+    "build_inputs_unchanged_during_build": true,
+    "iig_inputs_unchanged_during_build": true
+  },
+  "iig_runtime": {
+    "cpu_count": 8,
+    "generated_method_checks_passed": 205,
+    "result": 1,
+    "probe_completed": true,
+    "serial_sha256": "ddf1f6fd58fe1d16238e8e0232d8ac7e89c1dc46ab9407d50a6f32e2da6c37df",
+    "physical_hardware_tested": false
+  },
+  "host_checks": {
+    "native_driver_suite": "PASS",
+    "physical_producer": {
+      "tests": 100,
+      "optional_skips": 3,
+      "result": "PASS"
+    },
+    "first_draw_console": {
+      "tests": 2,
+      "result": "PASS"
+    },
+    "genuine_iig_replay_transform": {
+      "tests": 36,
+      "skips": 0,
+      "result": "PASS"
+    },
+    "iig_generation_workflow": {
+      "tests": 6,
+      "result": "PASS"
+    },
+    "iig_snapshot": {
+      "tests": 2,
+      "result": "PASS"
+    },
+    "monorepo_build_profile": {
+      "tests": 8,
+      "result": "PASS"
+    }
+  },
+  "source_reproduction": {
+    "result": "PASS",
+    "tree": "03816d5a5ea44a90712d242b949e090029b52a4b",
+    "log_sha256": "d9243094623c2075b75f5e3fc37225080c45be5d3743ac41fa81f51e80050652",
+    "built_source_fingerprint_unchanged_after_cache_cleanup": true
+  },
+  "userland": {
+    "root_sha256": "f461deda77d2ea9bd58bf548af62fbf9d1f377a90cad2930d72fe1e7e0632723",
+    "system_sha256": "9329e9c9bf46d6890798bb15d0d0036ec8c9235abf7d77edbacdd346992454a0",
+    "apple_binaries_modified": false,
+    "build_profile_result": "PASS"
+  },
+  "desktop_smoke": "qemu-build56-smoke.json",
+  "physical_migrated_image_tested": false,
+  "remaining": [
+    "Visible physical desktop",
+    "Complete physical charging/fuel-gauge policy",
+    "Coordinated full-performance clock and voltage control",
+    "All physical cores and full6GiB VM admission"
+  ]
+}

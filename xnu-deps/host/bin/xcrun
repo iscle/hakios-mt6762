@@ -20,6 +20,22 @@ case "$show" in
   platform) echo "${XNU_PLATFORM_PATH:-/Platforms/iPhoneOS.platform}"; exit 0;;
 esac
 if [ -n "$find" ]; then
+  if [ "${MACHINE:-}" = MT6762 ]; then
+    selected=
+    case "$find" in
+      iig) selected=${IIG:-} ;;
+      clang|clang++|dsymutil) selected=${MTK_LLVM_BIN:?}/$find ;;
+      mig|migcom|tcsh|unifdef|unzbm) selected=${MTK_HOST_TOOLS:?}/$find ;;
+      csh) selected=${MTK_HOST_TOOLS:?}/tcsh ;;
+      ld|ld64) selected=${THEOS:?}/toolchain/linux/iphone/bin/ld ;;
+      nm|otool|strip|lipo|libtool|nmedit|ctf_insert|codesign_allocate|install_name_tool)
+        selected=${THEOS:?}/toolchain/linux/iphone/bin/$find ;;
+    esac
+    if [ "$find" = iig ] || [ -n "$selected" ]; then
+      [ -n "$selected" ] && [ -x "$selected" ] || { echo "MT6762: no selected $find" >&2; exit 1; }
+      echo "$selected"; exit 0
+    fi
+  fi
   for d in "$HB" /usr/bin; do [ -x "$d/$find" ] && { echo "$d/$find"; exit 0; }; done
   [ "$(uname)" = Darwin ] && exec /usr/bin/xcrun -find "$find"
   exit 1

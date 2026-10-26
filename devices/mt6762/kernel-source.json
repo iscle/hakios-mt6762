@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "upstream_repository": "https://github.com/oosexgang/hackios-xnu-kernel.git",
+  "upstream_commit": "88513176b1e96ecf0b764cd62c6f4e6ac71345e3",
+  "apple_tag": "xnu-8796.121.2",
+  "apple_commit": "c54f35ca767986246321eb901baf8f5ff7923f6a",
+  "upstream_import": "a3f439bb4e66cb753e4f92dc5177b4e7f7780fcd",
+  "upstream_tree": "61151a1354e38aa9659db555ddba9200a3d8127b",
+  "kernel_commit": "c5e1f1008826e236e459cccb48b34847b1a32095",
+  "result_tree": "03816d5a5ea44a90712d242b949e090029b52a4b",
+  "patch_sha256": "ced577d969f65c103b5298ad3c0675ec6df196ce831a92320ae71b1cc7db7b5f",
+  "status": "MT6762 source delta; see README.md for build and hardware validation limits"
+}

@@ -1,0 +1,77 @@
+{
+  "format": 1,
+  "purpose": "Bounded migrated kernel/userland QEMU bootstrap smoke; not desktop validation",
+  "result": {
+    "passed": true,
+    "missing_markers": [],
+    "secondary_cpus_online": [
+      1
+    ],
+    "missing_secondary_cpus": [],
+    "errors": [],
+    "desktop_proven": false,
+    "physical_hardware_tested": false,
+    "capture_exit_code": 0,
+    "kernel_sha256": "bcc01522daf9bb430e8fd8df3d2b29a34bc3bf52674b978d936520eee1def60b",
+    "serial_sha256": "4d803678cc8d894cac793b2f35a199263fff7276800e484736a07e96d7b2720d",
+    "original_system_unchanged": true,
+    "helper_root_unchanged": true,
+    "fixture_unchanged": true
+  },
+  "source_files": {
+    "devices/mt6762/run-qemu.sh": "199d6c45615ea8337ba47b544039580501a769478e5dbeb8b9ed92d746a7f7f6",
+    "devices/mt6762/run_qemu.py": "05a8e93b8864c65d10411813413a7706d131d41117af97f88b17979643ee34b3",
+    "devices/mt6762/test_run_qemu.py": "1859a41d691a1cc75b7f500ce1b1dad22a76dda0cd5770bd43224030a2a860f0"
+  },
+  "artifacts": {
+    "boot/native-desktop-build56/desktop-hakios/run-inputs.json": "2976b360c0656e1fd0548587d1e1d619811d962e659abe974ac4bac37d324f7c",
+    "boot/native-desktop-build56/desktop-hakios/smoke-result.json": "30d0a02a65da7b99225e47937a6cb235a19812617d976a9b2775a884281c25bd",
+    "boot/native-desktop-build56/desktop-hakios/payload/manifest.json": "4ce92966cc76fe193891b0655e17d369da0e822877b1479168aeae73066e4e78",
+    "boot/native-desktop-build56/desktop-hakios/payload/smoke.serial.log": "4d803678cc8d894cac793b2f35a199263fff7276800e484736a07e96d7b2720d",
+    "boot/native-desktop-build56/desktop-hakios/payload/smoke.models.json": "754d6b3523dad4d6567e23710a0921afa027c201a54ba0ad8db0c1b8ab57b812",
+    "boot/native-desktop-build56/desktop-hakios/payload/smoke.png": "eefccb335673f297855cfc234e8736425a8a2bd48c03ac9161269b21f7f55d19"
+  },
+  "userland_root_sha256": "f461deda77d2ea9bd58bf548af62fbf9d1f377a90cad2930d72fe1e7e0632723",
+  "duration_seconds": 180,
+  "cpu_count": 2,
+  "host_tests_passed": 4,
+  "helper_evidence": {
+    "hakios_input_device_listed": true,
+    "hakios_libraries_inserted": true,
+    "original_apple_launchd_services_spawned": true,
+    "window_server_hooks_installed": true,
+    "readonly_battery_samples": 12
+  },
+  "presentation": {
+    "retained_markers": [
+      "mt6762-present: service ready display=1125x2436 panel=384x854 stride=1536 opaque=0"
+    ],
+    "window_server_ready_observed": false,
+    "system_shell_connected_observed": false,
+    "image_visual": "Black; all framebuffer bytes zero at final sample",
+    "console_release_exercised": false,
+    "desktop_proven": false
+  },
+  "last_msdc": {
+    "lab": 1,
+    "sectors": 679257,
+    "bytes": 347779584,
+    "wall_us": 180003483,
+    "read_us": 166889285,
+    "read_max_us": 35423,
+    "admissions": 0,
+    "full": 0,
+    "reused": 0,
+    "full_us": 0,
+    "full_max_us": 0,
+    "slow_full": 0,
+    "admission_errors": 0,
+    "clock_reverse": 0
+  },
+  "limits": [
+    "Fresh new monorepo kernel and helper root reached original Apple executables; no old helper root was used",
+    "Default smoke deliberately ends before any desktop guarantee",
+    "No SwapEnd/show/copy marker occurred in this capture; console handoff fix remains runtime-unexercised here",
+    "Custom QEMU fixtures are synthetic, not physical peripheral validation"
+  ]
+}

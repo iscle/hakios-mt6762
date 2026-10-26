@@ -1,5 +1,13 @@
 # HakiOS
 
+This fork adds an **MT6762 / Cortex-A53 port** on top of the October 26 HakiOS
+refactor (`88513176`). Start with [devices/mt6762](devices/mt6762/README.md)
+for its kernel, userspace-helper and emulator profiles. The upstream Qualcomm
+status and commands below do not describe MT6762 hardware support. On the MT6762
+phone, the previous base reaches Apple's window server and receives native touch,
+but a visible home screen and the complete charging/clock implementation remain
+unverified. The migrated base is undergoing validation.
+
 English · [中文](README.zh.md) · [Українська](README.uk.md)
 
 HakiOS runs the open-source XNU kernel (xnu-8796.121.2) with my own boot loader and my own drivers

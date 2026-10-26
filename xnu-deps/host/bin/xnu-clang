@@ -14,5 +14,13 @@ for a in "$@"; do
     *) args+=("$a");;
   esac
 done
-exec /usr/bin/$drv -include "$HB/../../hostinc/xnu_clang_compat.h" -target arm64-apple-ios${XNU_SDK_VERSION:-16.5} --ld-path="$HB/ld64" \
-  -w "${extra[@]}" "${args[@]}"
+compiler=/usr/bin/$drv
+linker=$HB/ld64
+board_args=()
+if [ "${MACHINE:-}" = MT6762 ]; then
+  compiler=${MTK_LLVM_BIN:?MT6762 requires MTK_LLVM_BIN}/$drv
+  linker=${THEOS:?MT6762 requires THEOS}/toolchain/linux/iphone/bin/ld
+  board_args=(-mcpu=cortex-a53)
+fi
+exec "$compiler" -include "$HB/../../hostinc/xnu_clang_compat.h" -target arm64-apple-ios${XNU_SDK_VERSION:-16.5} --ld-path="$linker" \
+  -w "${extra[@]}" "${args[@]}" "${board_args[@]}"

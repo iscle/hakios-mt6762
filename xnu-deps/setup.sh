@@ -24,7 +24,7 @@
 #                                                   Apple's internal SDK has and the public one lacks
 set -e -o pipefail
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-source "$HERE/../xnu-env.sh"
+source "$HERE/../xnu-env.sh" || exit 1
 cd "$XNUDEPS"
 JOBS=${JOBS:-$(nproc 2>/dev/null || sysctl -n hw.ncpu)}
 CCTOOLS=$THEOS/toolchain/linux/iphone/bin
@@ -55,7 +55,8 @@ link() {
 # replace FILE with what is on standard input, unless it is the same already (make looks at time stamps)
 update() {
 	cat > "$1.new"
-	if cmp -s "$1.new" "$1"; then rm "$1.new"; else mv "$1.new" "$1"; fi
+	if [ "${MACHINE:-}" = MT6762 ] && [ -L "$1" ]; then mv "$1.new" "$1"
+	elif cmp -s "$1.new" "$1"; then rm "$1.new"; else mv "$1.new" "$1"; fi
 }
 
 # macOS: no theos, but Xcode has the same cctools and the SDK can be had from github.com/theos/sdks.
@@ -93,7 +94,40 @@ linktree() {
 	fi
 }
 
+# MTK reuses specific host binaries and pinned open dependency sources. The
+# compiler wrappers, build rules and writable SDK overlay belong to this tree.
+# No old kernel files, old generated headers or old static archives are copied.
+stage1_mt6762() {
+	python3 "$DARWIN_REDWOOD/devices/mt6762/build_inputs.py" check-reuse || exit 1
+	local tool target sdk_local=$XNU_SDK_PATH/usr/local
+	mkdir -p host/bin sdk/Platforms/iPhoneOS.platform
+	for tool in mig migcom unifdef tcsh unzbm; do
+		target=$MTK_HOST_TOOLS/$tool
+		if [ -e "host/bin/$tool" ] || [ -L "host/bin/$tool" ]; then
+			[ "$(readlink -f "host/bin/$tool")" = "$(readlink -f "$target")" ] || die "different existing host tool: $tool"
+		else ln -s "$target" "host/bin/$tool"; fi
+	done
+	link tcsh host/bin/csh
+	link xnu-clang host/bin/xnu-clang++
+	# The base SDK and all reused inputs are checked before creating anything.
+	if [ -e "$XNU_SDK_PATH" ] || [ -L "$XNU_SDK_PATH" ]; then
+		[ ! -L "$XNU_SDK_PATH" ] && [ -f "$XNU_SDK_PATH/.mt6762-base-sdk" ] || die 'refusing unmarked/shared MTK SDK overlay'
+		[ "$(cat "$XNU_SDK_PATH/.mt6762-base-sdk")" = "$(cd "$IOS_SDK" && pwd -P)" ] || die 'MTK base SDK changed; preserve overlay and create a fresh one'
+	else
+		linktree "$(cd "$IOS_SDK" && pwd -P)" "$XNU_SDK_PATH"
+		printf '%s\n' "$(cd "$IOS_SDK" && pwd -P)" > "$XNU_SDK_PATH/.mt6762-base-sdk"
+	fi
+	mkdir -p "$sdk_local/include/kernel/os" "$sdk_local/include/os" "$sdk_local/lib/kernel" "$sdk_local/libexec"
+	update "$sdk_local/libexec/availability.pl" < "$MTK_AVAILABILITY_SOURCE/availability.pl"
+	chmod +x "$sdk_local/libexec/availability.pl"
+	{ "$MTK_HOST_TOOLS/unifdef" -DOS_FIREHOSE_SPI=1 -DKERNEL=1 "$XNU_LIBDISPATCH_SOURCE/os/firehose_buffer_private.h" || [ $? -eq 1 ]; } |
+		update "$sdk_local/include/kernel/os/firehose_buffer_private.h"
+	update "$sdk_local/include/kernel/os/firehose_types.defs" < "$XNU_LIBDISPATCH_SOURCE/src/firehose/firehose_types.defs"
+	log 'MT6762 reuse prepared; genuine IIG validation is required before exporthdrs/build'
+}
+
 stage1() {
+	if [ "${MACHINE:-}" = MT6762 ]; then stage1_mt6762; return; fi
 	local missing= tool
 	local tools="git curl tar xz make cc clang clang++ flex bison m4 perl python3 autoreconf automake"
 	[ "$XNU_HOST_OS" = Darwin ] && { theos_mac; tools="git curl tar make cc clang clang++ flex bison m4 perl python3"; }
@@ -198,13 +232,22 @@ stage1() {
 # the kernel). They are compiled against the headers the kernel build exports, so that step
 # of the kernel build comes first.
 stage2() {
+	local dispatch=$XNUDEPS/libdispatch dependency_board=BCM2837
+	if [ "${MACHINE:-}" = MT6762 ]; then
+		python3 "$DARWIN_REDWOOD/devices/mt6762/build_inputs.py" check-iig || exit 1
+		python3 "$DARWIN_REDWOOD/devices/mt6762/build_inputs.py" check-reuse || exit 1
+		[ ! -L "$XNU_SDK_PATH" ] && [ -f "$XNU_SDK_PATH/.mt6762-base-sdk" ] || die 'run the MTK bootstrap to create its separate SDK overlay'
+		dispatch=$XNU_LIBDISPATCH_SOURCE; dependency_board=MT6762
+	fi
 	[ -f "$XNU_SRC/makedefs/MakeInc.def" ] || die "no kernel tree in $XNU_SRC (xnu/apply.sh makes it)"
 	[ -x host/bin/migcom ] && [ -d "$XNU_SDK_PATH/usr/local/lib/kernel" ] || die "stage 1 has not been done"
 	local lib=$XNU_SDK_PATH/usr/local/lib/kernel hdrs=$XNU_SRC/BUILD/obj/EXPORT_HDRS file
 	# three Mach-O headers for the build tools the kernel build compiles for this machine (SETUP/)
 	mkdir -p hostinc/mach-o
 	for file in loader.h nlist.h fat.h; do
-		[ -f hostinc/mach-o/$file ] || cp "$XNU_SRC/EXTERNAL_HEADERS/mach-o/$file" hostinc/mach-o/
+		if [ "${MACHINE:-}" = MT6762 ]; then
+			update "hostinc/mach-o/$file" < "$XNU_SRC/EXTERNAL_HEADERS/mach-o/$file"
+		else [ -f hostinc/mach-o/$file ] || cp "$XNU_SRC/EXTERNAL_HEADERS/mach-o/$file" hostinc/mach-o/; fi
 	done
 	if [ -n "$REBUILD_LIBS" ]; then rm -f $lib/libfirehose_kernel.a $lib/libpthread_kext.a; fi
 	if [ -f $lib/libfirehose_kernel.a ] && [ -f $lib/libpthread_kext.a ]; then
@@ -220,12 +263,12 @@ stage2() {
 		xnu-clang -arch arm64 -c -Os -mkernel -nostdinc -fno-builtin \
 			-DKERNEL=1 -DKERNEL_PRIVATE=1 -DXNU_KERNEL_PRIVATE=0 -DPRIVATE=1 -D__DARWIN_64_BIT_INO_T=1 \
 			-DDISPATCH_USE_DTRACE=0 -DOS_ATOMIC_CONFIG_MEMORY_ORDER_DEPENDENCY=1 \
-			-DOS_ATOMIC_CONFIG_STARVATION_FREE_ONLY=0 -DOS_FIREHOSE_SPI=1 -DARM64_BOARD_CONFIG_BCM2837 \
-			-Ilibdispatch -Ilibdispatch/src -Ilibdispatch/src/firehose \
+			-DOS_ATOMIC_CONFIG_STARVATION_FREE_ONLY=0 -DOS_FIREHOSE_SPI=1 -DARM64_BOARD_CONFIG_$dependency_board \
+			-I"$dispatch" -I"$dispatch/src" -I"$dispatch/src/firehose" \
 			-I$hdrs/osfmk -I$hdrs/bsd -I$hdrs/libkern -I$hdrs/pexpert -I$hdrs/iokit -I$hdrs/security \
 			-I$XNU_SRC/libkern/firehose -I$hdrs/libkern/os -I$XNU_SRC/EXTERNAL_HEADERS \
 			-I$XNU_SDK_PATH/usr/local/include/kernel \
-			-o build/firehose/firehose_buffer.o libdispatch/src/firehose/firehose_buffer.c
+			-o build/firehose/firehose_buffer.o "$dispatch/src/firehose/firehose_buffer.c"
 		libtool -static -o $lib/libfirehose_kernel.a build/firehose/firehose_buffer.o
 	fi
 	if [ ! -f $lib/libpthread_kext.a ]; then
@@ -235,7 +278,7 @@ stage2() {
 	log "stage 2 done; now: ./xnu-build.sh -j$JOBS -k"
 }
 
-case "$1" in
+case "${1:-}" in
 --stage1) stage1 ;;
 --stage2) stage2 ;;
 --rebuild-libs) REBUILD_LIBS=1 stage2 ;;
