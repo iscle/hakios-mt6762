@@ -6,7 +6,10 @@ for its kernel, userspace-helper and emulator profiles. The upstream Qualcomm
 status and commands below do not describe MT6762 hardware support. On the MT6762
 phone, the previous base reaches Apple's window server and receives native touch,
 but a visible home screen and the complete charging/clock implementation remain
-unverified. The migrated base is undergoing validation.
+unverified. The migrated base has reached a visible home screen in an eight-core
+QEMU trial using the original iOS executables, with incomplete graphics (magenta
+wallpaper artifacts and blank widgets). That synthetic result does not establish
+a physical home screen; see the MT6762 profile for exact evidence and commands.
 
 English · [中文](README.zh.md) · [Українська](README.uk.md)
 

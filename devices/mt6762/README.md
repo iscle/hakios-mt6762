@@ -62,23 +62,38 @@ checks passed for native input, display/brightness, PMIC/power, clocks, storage,
 image construction and genuine IIG compatibility. The 8-core QEMU test passed
 all 205 generated DriverKit checks. See [validation-build56.json](validation-build56.json).
 
-The paired kernel56/helper-build2 desktop smoke booted through the new HakiOS
-interfaces into Apple's launchd and started SpringBoard. That 180-second run
-did not reach frame submission or a visible desktop. Its result is recorded in
-[qemu-build56-smoke.json](qemu-build56-smoke.json). Reproduce a bounded trial
-with the explicit matching artifacts:
+The paired kernel56/helper-build2 booted through the migrated HakiOS interfaces
+into Apple's launchd. The initial 180-second smoke reached SpringBoard startup
+but no frame submission; it remains recorded separately in
+[qemu-build56-smoke.json](qemu-build56-smoke.json).
+
+The subsequent **eight-core, 600-second QEMU trial reached a visible SpringBoard
+home screen**, with app icons and the dock. Retained markers show valid frame
+submissions, text-console release and completed pixel copies. All seven secondary
+cores were online, no kernel panic or terminal storage error was observed, and
+the original system image and helper root were unchanged. See
+[qemu-build56-smp8-long.json](qemu-build56-smp8-long.json).
+
+Graphics remain incomplete: the final image has a magenta wallpaper with artifacts
+and blank widget tiles. The donor helper requested automatic unlock; no synthetic
+touch or power input was injected, so this run does not prove touch-driven
+unlocking. It validates software rendering and presentation in the custom QEMU
+machine, not physical display behavior or GPU acceleration.
+
+Reproduce the eight-core trial with explicit matching artifacts and a fresh output:
 
 ```sh
 devices/mt6762/run-qemu.sh \
     --kernel "$MTK_WORKSPACE/boot/native-desktop-build56/kernel.macho" \
     --kernel-build-report "$MTK_WORKSPACE/boot/native-desktop-build56/build.json" \
     --userland "$MTK_WORKSPACE/boot/hakios-userland-build2" \
-    --out "$MTK_WORKSPACE/boot/new-hakios-qemu-trial" --cpus 2 --seconds 180
+    --out "$MTK_WORKSPACE/boot/new-hakios-qemu-trial" --cpus 8 --seconds 600
 ```
 
-Use `--prepare-only` to create the experiment without launching QEMU. The
-runner uses the custom MT6762 machine and a private read-only eMMC fixture.
-These synthetic peripheral results do not establish physical operation.
+The default is an eight-core, 120-second bootstrap smoke; it does not promise a
+visible desktop. Use `--prepare-only` to create the experiment without launching
+QEMU. The runner uses the custom MT6762 machine and a private read-only eMMC
+fixture. These synthetic peripheral results do not establish physical operation.
 
 The last physical capture on the previous base (Image41/kernel54, capture36)
 reached “window server ready”, connected SpringBoard's system shell and delivered
@@ -95,5 +110,6 @@ of a complete charging implementation. Existing physical input observations
 cover touch and all three power/volume buttons.
 
 The profile scripts build local artifacts and run emulator trials. They do not
-flash the phone. The currently installed image remains the previous base until
-a separately prepared device trial.
+flash the phone. The all-eight-core Image43/kernel56/helper2 candidate is now installed with a
+verified full boot-partition readback. Its first physical trial and retained log
+capture are pending; the earlier two-core physical results remain separate.

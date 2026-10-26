@@ -128,7 +128,7 @@ def main():
     p.add_argument('--userland', type=Path, required=True, help='Fresh build-userland.sh output directory')
     p.add_argument('--out', type=Path, required=True, help='New, nonexistent output directory')
     p.add_argument('--prepare-only', action='store_true')
-    p.add_argument('--cpus', type=int, choices=(1, 2, 4, 8), default=2)
+    p.add_argument('--cpus', type=int, choices=(1, 2, 4, 8), default=8)
     p.add_argument('--seconds', type=int, default=120, help='Bounded smoke: 15..600 seconds, default120')
     work = Path(os.environ.get('MTK_WORKSPACE', REPO.parent))
     llvm = Path(os.environ.get('MTK_LLVM_BIN', work / 'toolchain/bin'))

@@ -52,8 +52,8 @@
   },
   "source_reproduction": {
     "result": "PASS",
-    "tree": "03816d5a5ea44a90712d242b949e090029b52a4b",
-    "log_sha256": "d9243094623c2075b75f5e3fc37225080c45be5d3743ac41fa81f51e80050652",
+    "tree": "74ddf9ab86b01308bfe9489b2f06216a7779a1a9",
+    "log_sha256": "77e03ed063d7cea73b246bbee000b03520cf1201798df25df2a5623452215429",
     "built_source_fingerprint_unchanged_after_cache_cleanup": true
   },
   "userland": {
@@ -69,5 +69,17 @@
     "Complete physical charging/fuel-gauge policy",
     "Coordinated full-performance clock and voltage control",
     "All physical cores and full6GiB VM admission"
-  ]
+  ],
+  "physical_candidate": {
+    "name": "Image43/kernel56/helper2, normal35",
+    "image_sha256": "ae8894f500f35cfff8f79f2581b28f28c170e15277d835af09f450915e52b10b",
+    "raw_sha256": "0dc5ee9810ac8cc48b4e80e084e62e8f465c7695a1e5e935e1e9f1c375372523",
+    "cpu_count": 8,
+    "structure_and_avb_checks_passed": true,
+    "installed": true,
+    "full_partition_readback_verified": true,
+    "physical_execution_proven": false,
+    "installation_record_sha256": "52b141afe13bb2aa735d27e971d7aa4b4c2f27c3eaeee47a3f819ca3a7630640"
+  },
+  "desktop_long_trial": "qemu-build56-smp8-long.json"
 }
