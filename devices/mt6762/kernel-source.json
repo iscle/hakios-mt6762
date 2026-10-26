@@ -6,8 +6,8 @@
   "apple_commit": "c54f35ca767986246321eb901baf8f5ff7923f6a",
   "upstream_import": "a3f439bb4e66cb753e4f92dc5177b4e7f7780fcd",
   "upstream_tree": "61151a1354e38aa9659db555ddba9200a3d8127b",
-  "kernel_commit": "fcdd11d63fe222354c6dc83450a174d8732e92f6",
-  "result_tree": "b1e068635ff4640aa7e62153c654550099d92f6d",
-  "patch_sha256": "24a37c29076802e7906502eaf7bf89b315ac2e1b7979a49050dc8a6a8b7bd868",
+  "kernel_commit": "3bd89cf55d1c6b78982bb115afe57273f102b813",
+  "result_tree": "9c8793354a197033e0862e61d69d7fdde919b4bb",
+  "patch_sha256": "782211eeff3bc551972d05b60ee70694a5c663f543914602490707e8e392d890",
   "status": "MT6762 source delta; see README.md for build and hardware validation limits"
 }

@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "image": "Image51/kernel59/helper6",
+  "installed": false,
+  "kernel_sha256": "55eeb77c99b595590c6c14c5d1b3dc05d2c65ebf2b0332647cc77ec83fd9c11b",
+  "image_sha256": "0b40b04f2006600663eb62b3c196716cfe29b388759e1cac27c4d54d6d84f1c9",
+  "manifest_sha256": "136dc97d68e6904bef2f76b0e4211460781b8fac84989c7a8d75099444f2e12e",
+  "trace_identity": "4537579a1b872d28588a0aac4f7c56a5f120b146b5e6bb855799a590732f420b",
+  "all_voltage_fields_initially_zero": true,
+  "loader_pmic_writes": false,
+  "charger_control_granted": false,
+  "physical_voltage_proven": false,
+  "soc_available": false,
+  "wifi_radio_active": false,
+  "format": 1,
+  "normal_image_sha256": "984822a6a911cba92fbb65d91364eaaab4533ff37a25e37c07541e391eeaa7c7",
+  "normal_image_bytes": 33554432,
+  "normal_packaging_independently_verified": true,
+  "source_checkpoint": "3bd89cf55d1c6b78982bb115afe57273f102b813",
+  "capture_script_prepared": "capture46",
+  "capture_reader_running": false,
+  "installed_image_unchanged": "Image50/kernel58/helper6"
+}

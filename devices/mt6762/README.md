@@ -153,3 +153,19 @@ battery observer and optional coherent current/Coulomb samples. Charger
 control and remaining percentage are still unavailable. The180-second QEMU
 boot and host suites pass; see [validation-build58.json](validation-build58.json)
 and [physical-build50-trial.json](physical-build50-trial.json).
+
+Kernel59 adds a narrowly scoped fresh-voltage observer. Its loader validates
+the live battery ADC route and records clock/reset/test/data-reuse settings;
+the consumer permits one channel1 request and rejects stale results. The
+stock preloader enables a data-reuse bit whose channel1 interaction remains
+unproven, so the new path may refuse voltage sampling while retaining its
+diagnostics. The build, host fault tests and180-second eight-core QEMU smoke
+pass. Image51/normal42 is packaged and **not installed**; Image50 remains
+installed awaiting its first physical test. See
+[validation-build59.json](validation-build59.json) and
+[physical-build51-trial.json](physical-build51-trial.json).
+
+The source also contains a separately tested conditional SOC model and
+reset-held BT/Wi-Fi/MCU firmware staging core. Neither is integrated into
+physical operation. Percentage, complete charging policy and active Wi-Fi
+remain unfinished; emulator results do not establish those capabilities.

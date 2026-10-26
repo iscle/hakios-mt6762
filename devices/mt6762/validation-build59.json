@@ -1,0 +1,49 @@
+{
+  "format": 1,
+  "kernel": "kernel59",
+  "kernel_sha256": "55eeb77c99b595590c6c14c5d1b3dc05d2c65ebf2b0332647cc77ec83fd9c11b",
+  "source_checkpoint": "3bd89cf55d1c6b78982bb115afe57273f102b813",
+  "source_delta_reproduced": true,
+  "current_compiled_source_matches_build": true,
+  "kernel_all_checks_passed": true,
+  "qemu_180_second_smoke": {
+    "passed": true,
+    "missing_markers": [],
+    "secondary_cpus_online": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "missing_secondary_cpus": [],
+    "errors": [],
+    "desktop_proven": false,
+    "physical_hardware_tested": false,
+    "capture_exit_code": 0,
+    "kernel_sha256": "55eeb77c99b595590c6c14c5d1b3dc05d2c65ebf2b0332647cc77ec83fd9c11b",
+    "serial_sha256": "4b06841185ef10c0ca36c6ce173e0fb5c77989adb0edc8d96b59cc5e5b2941f1",
+    "original_system_unchanged": true,
+    "helper_root_unchanged": true,
+    "fixture_unchanged": true
+  },
+  "host_checks": {
+    "physical_packaging": "117 tests PASS,3 optional skips",
+    "vbat_actual_observer": "215 WACS faults,48 configuration changes,54 expiry positions PASS",
+    "original_battery_observer": "272 WACS faults,16 configuration changes,70 expiry positions PASS",
+    "vbat_fdt_profile": "7 test groups PASS,including capture44 and dump DT",
+    "original_arm64_voltage_conversion": "9 vectors PASS",
+    "battery_soc": "21 tests PASS; standalone conditional model, not kernel integrated",
+    "connectivity_rom": "89 exact firmware scenarios PASS; freestanding AArch64 and GCC analysis PASS"
+  },
+  "installed": false,
+  "limits": [
+    "No physical kernel59 execution or fresh voltage result yet.",
+    "ADC admission refuses global/channel1 data reuse; the preloader enables the global bit, and its coupling remains unresolved.",
+    "SOC model is unintegrated; native percentage and complete charging policy remain unavailable.",
+    "ROM staging core has no physical adapter or radio activation; Wi-Fi remains unfinished.",
+    "Sanitizer runtimes unavailable for connectivity ROM tests."
+  ]
+}
