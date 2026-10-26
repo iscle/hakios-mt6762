@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "image": "Image45/normal37/kernel57/helper6",
+  "capture": "capture40",
+  "log_sha256": "8f9cd085a5ac46b56763504ccfa4679a50d8a87d5bbd72b6a888545112ee89dd",
+  "log_bytes": 1310719,
+  "user_observation": "Control Center visible; bottom home gesture does not work",
+  "physical_graphical_ui_proven": true,
+  "home_screenshot_proven": false,
+  "system_shell_finished_startup": true,
+  "finished_flag_observed_at_shutdown_seconds": 496.882956,
+  "windowserver_ready_seconds": 63.379235,
+  "touch_destinations": [
+    "SpringBoard",
+    "MobileTimer",
+    "calculator",
+    "Spotlight",
+    "AppStore"
+  ],
+  "system_gesture_routing_observed": true,
+  "final_framebuffer": "Black with shutdown spinner after holding Power",
+  "framebuffer_sha256": "6b1086eb7c77ca0caa4b40409f64887b2c3972b01efb48cf5a7e634ac5b06323",
+  "limits": [
+    "The retained buffer contains the first256KiB and last1MiB; middle log records are lost and tail is in ring order",
+    "The final framebuffer was collected during shutdown, not while Control Center was visible",
+    "These events do not establish a successful bottom home gesture",
+    "Full8-core operation was established in preceding Image45 capture39 with the same kernel"
+  ]
+}

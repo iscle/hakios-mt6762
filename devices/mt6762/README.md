@@ -95,21 +95,45 @@ visible desktop. Use `--prepare-only` to create the experiment without launching
 QEMU. The runner uses the custom MT6762 machine and a private read-only eMMC
 fixture. These synthetic peripheral results do not establish physical operation.
 
-The last physical capture on the previous base (Image41/kernel54, capture36)
-reached “window server ready”, connected SpringBoard's system shell and delivered
-native touch events to Apple backboardd, without a recorded terminal storage
-failure. The recovered framebuffer still showed console text. This migration
-fixes the MT6762 first-frame console release and adds bounded retained display
-diagnostics; it has not yet established a visible physical desktop.
+Physical Image45/kernel57/helper6 reaches the graphical interface: the user
+observed Control Center, captured touch routing includes several open apps,
+and SpringBoard reported completed startup. All eight cores have been observed
+online. The final capture40 framebuffer shows the shutdown spinner because the
+Power-button restart happened before collection; it is not a Home-screen
+screenshot. See [physical-build45-capture40.json](physical-build45-capture40.json).
+
+Bulk eMMC reads and the factory Wi-Fi identity handoff resolved two separate
+startup delays. The physical window server now becomes ready at about63seconds,
+down from280seconds; this is not the time to a finished Home screen. LaunchServices
+still rebuilds its databases in the fresh RAM-backed data volume. See
+[BOOT-PERFORMANCE.rst](BOOT-PERFORMANCE.rst).
+
+Bottom-edge navigation now has a tested policy correction: the missing
+`/buttons/home-button-type` made iOS assume a physical Home key. Setting it to2
+selects gesture navigation. Three matching D22 artwork traits also let UIKit
+resolve its existing bounding-path asset; the asset itself was already present.
+An earlier candidate with only HomeButtonType2 was rejected before installation.
+
+Native QEMU touch tests now show app-to-Home navigation, the app switcher and
+top-right Control Center. Some swipe paths remain inconsistent and one leaves
+partially rendered Clock content. See [qemu-build57-gestures.json](qemu-build57-gestures.json).
+Image47 carries the four UI properties with the same kernel57/helper6. It is
+installed and fully readback verified; physical gesture validation is pending.
+See [physical-build47-trial.json](physical-build47-trial.json).
 
 The phone has 6 GiB of DRAM; the current admitted VM range is about 3838 MiB.
-Two physical CPU cores have been observed online. Full RAM reclamation, all
-physical cores, coordinated performance/voltage control, complete charging and
-fuel-gauge policy remain open work. The inherited charger state is not evidence
-of a complete charging implementation. Existing physical input observations
-cover touch and all three power/volume buttons.
+Full RAM reclamation, coordinated performance/voltage control, complete charging
+and fuel-gauge policy remain open work. The inherited charger state is not
+evidence of a complete charging implementation. Existing physical input
+observations cover touch and all three power/volume buttons.
+
+Native Wi-Fi integration targets the stock CONSYS_6765/CONNAC soc1_0 AXI-DMA
+driver and per-phone firmware/calibration. The factory MAC property supplies
+identity only; no scan, association or Wi-Fi traffic is established yet.
+The existing HakiOS station/network interface can be reused above a new
+MediaTek connectivity backend.
 
 The profile scripts build local artifacts and run emulator trials. They do not
-flash the phone. The all-eight-core Image43/kernel56/helper2 candidate is now installed with a
-verified full boot-partition readback. Its first physical trial and retained log
-capture are pending; the earlier two-core physical results remain separate.
+flash the phone. Image47/kernel57/helper6 is installed with a verified
+full boot-partition readback. The physical trials use a separate guarded
+installer and retained-log reader with manual Power-button restarts.

@@ -26,8 +26,8 @@
   "network_driver_proven": false,
   "install_result": "/home/iscle/mt6762-ios-port/hardware/normal-boot-20261025/upgrade33/install/result.json",
   "limitations": [
-    "Full-duration physical retry pending",
-    "This supplies factory identity only; Wi-Fi hardware is not enabled"
+    "Wi-Fi hardware is not enabled by the factory MAC handoff",
+    "Physical Home gesture failure under investigation; no physical Home screenshot retained"
   ],
-  "physical_result": "capture39: lsd progresses beyond previous MobileGestalt wait; short130s attempt, home not reached"
+  "physical_result": "capture40: user observed Control Center, apps receive touch, finishedStartup YES; final framebuffer is shutdown spinner"
 }

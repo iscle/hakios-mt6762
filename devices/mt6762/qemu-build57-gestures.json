@@ -1,0 +1,74 @@
+{
+  "format": 1,
+  "scope": "Native MT6762 QEMU touch counterfactual; no physical hardware claim",
+  "kernel_sha256": "fb484061d76d4cabfa0316575f0cff46f9bd8df8cd252ed3612d1eefee6035e8",
+  "helper_sha256": "26969340a9d5305456c5474d50c314b53507d0548e7e3136a8a3392c6d38667f",
+  "evidence_sha256": "63433f444a7847d9f5a46e6ee6dba487d730410136ea416aa279badfbdaf34f3",
+  "result": {
+    "reason": "requested-complete",
+    "elapsed_s": 591.747196,
+    "startup_markers": [
+      {
+        "elapsed_s": 267.172017,
+        "marker": "SpringBoard finished startup"
+      }
+    ],
+    "actions_completed": 12,
+    "physical_hardware_tested": false,
+    "serial_sha256": "cb4a879a5c87d9210d761581522027f50c4e068cfa91526967f96ebb61cf91fb",
+    "kernel_sha256_after": "fb484061d76d4cabfa0316575f0cff46f9bd8df8cd252ed3612d1eefee6035e8",
+    "helper_root_sha256_after": "26969340a9d5305456c5474d50c314b53507d0548e7e3136a8a3392c6d38667f"
+  },
+  "added_properties": {
+    "/buttons/home-button-type": {
+      "encoding": "LE32",
+      "value": 2
+    },
+    "/product/artwork-device-idiom": {
+      "encoding": "ASCII-NUL",
+      "value": "phone"
+    },
+    "/product/artwork-scale-factor": {
+      "encoding": "LE32",
+      "value": 3
+    },
+    "/product/artwork-device-subtype": {
+      "encoding": "LE32",
+      "value": 2436
+    }
+  },
+  "unchanged": [
+    "kernel57",
+    "helper6",
+    "read-only system/eMMC fixture",
+    "original random seed",
+    "all existing ADT properties"
+  ],
+  "asset_assertion_observed": false,
+  "panic_observed": false,
+  "terminal_storage_failure_observed": false,
+  "evidence": "boot/native-desktop-build57/gesture-homebutton2-artwork-helper6/evidence.json",
+  "observations": [
+    "Visible Home with wallpaper/icons/dock",
+    "Top-right pull opens Control Center",
+    "Visible Clock app followed by bottom854-to350 swipe returns Home",
+    "Slow bottom854-to450 swipe reaches app switcher"
+  ],
+  "limitations": [
+    "CC bottom854 swipe remained in CC once; bottom820 swipe dismissed it",
+    "A later Clock bottom820 swipe left partial content, which persisted for about32seconds",
+    "Some earlier scripted taps overlapped app launch and are excluded from app-to-Home evidence",
+    "Does not establish physical gesture reliability; no stationary hold was injected in slow switcher action"
+  ],
+  "baseline": "Missing home-button-type reproduced bottom swipes opening Control Center",
+  "rejected_counterfactual": "HomeButtonType2 alone caused repeated UIKit bounding-path assertion; never installed",
+  "asset_evidence": {
+    "path": "UIKitCore.framework/BoundingPathData.bundle/Assets.car",
+    "bytes": 101768,
+    "sha256": "198b8b5ec7c68bf56fe3397839ea3ef807c6f83682795ea67210393982929873",
+    "present_in_installed_system": true,
+    "exact_entry": "BoundingPathBitmap-1125x2436-375x812-3.00x",
+    "phone_idiom": true,
+    "which_artwork_property_is_necessary": "not isolated"
+  }
+}

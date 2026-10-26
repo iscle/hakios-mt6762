@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "image": "Image47/normal39/kernel57/helper6",
+  "normal_sha256": "3ae8e60765707bd7b362c3256777d7cc1dbb3433491e639a5330434fc031da49",
+  "raw_sha256": "5238f5f3d5b6a680025d611d28e84212777527bbe1275b02506d58ab5fc32c02",
+  "kernel_sha256": "fb484061d76d4cabfa0316575f0cff46f9bd8df8cd252ed3612d1eefee6035e8",
+  "helper_sha256": "26969340a9d5305456c5474d50c314b53507d0548e7e3136a8a3392c6d38667f",
+  "physical_manifest_sha256": "a148bde845928f7088d0cb07758693cda8d30c311cf2513a62e021b11e264bd0",
+  "trace_identity": "02e13c1a40c5bdacf18c543a07bd5194a63d1bfbf9067db0e08135774b457624",
+  "change": "Add home-button-type2 and three matching D22 artwork traits; retain kernel57/helper6 and factory Wi-Fi identity",
+  "adt_comparison": "Only four UI properties and fresh random-seed differ from Image45",
+  "physical_execution_proven": false,
+  "physical_desktop_proven": false,
+  "no_apple_binary_changes": true,
+  "network_driver_proven": false,
+  "install_result": "hardware/normal-boot-20261025/upgrade35/install/result.json",
+  "limitations": [
+    "Physical Home/app-switcher validation pending",
+    "Some native QEMU gesture paths remain inconsistent",
+    "Wi-Fi radio driver is not enabled by factory identity",
+    "Image46 rejected before installation due to UIKit bounding-path asset assertion"
+  ],
+  "physical_result": "Installed with full32MiB readback; awaiting manual startup and physical gesture test",
+  "validation": {
+    "serialized_prepare_tests": "21 passed",
+    "normal_avb_payload_tests": "6 passed",
+    "guarded_install_offline": "5 cases passed",
+    "capture_reader_offline": "3 negative cases passed",
+    "full_boot_readback_verified": true,
+    "preserved_partitions_unchanged": true
+  }
+}
