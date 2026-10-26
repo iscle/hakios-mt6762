@@ -1,0 +1,22 @@
+{
+  "format": 1,
+  "image": "Image50/normal41/kernel58/helper6",
+  "installed": true,
+  "full_boot_readback_verified": true,
+  "normal_sha256": "83667b88af092595ab4c5df20b0b95b1bd905f8dd837720fcd2e991b0e6ab6b0",
+  "raw_sha256": "85e752179b10aa5bd922253a61c52b523d321bd1f50e14ab1e6520e246ccdd15",
+  "trace_identity": "3b6fd8635cea0ce1ffe5ec7f793681ad710905c19fe57ad7906a14776733bfb5",
+  "kernel_sha256": "0b0c4d8f28ccb96bf2779f13345c447acfd9892b3dd4e58d8a1695ca5a299293",
+  "cpus": 8,
+  "changes": [
+    "native recurring battery presence/external/PSCstatus publication",
+    "optional bounded coherent current and signed CAR observation",
+    "thin-bezel=1",
+    "read-only connectivity power survey"
+  ],
+  "soc_available": false,
+  "charger_control_added": false,
+  "radio_enabled": false,
+  "manual_first_start_pending": true,
+  "physical_execution_proven": false
+}

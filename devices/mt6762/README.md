@@ -32,7 +32,7 @@ the reviewed Xcode 26 / IIG440 compatibility path.
 
 ```sh
 export MTK_WORKSPACE=/absolute/path/to/mt6762-ios-port
-source "$MTK_WORKSPACE/toolchain/iig-legacy-build56.env"
+source "$MTK_WORKSPACE/toolchain/iig-legacy-build57.env"
 xnu-src/xnu-8796.121.2/tools/mt6762/bootstrap.sh
 devices/mt6762/build-kernel.sh
 devices/mt6762/build-userland.sh "$MTK_WORKSPACE/boot/hakios-userland-build1"
@@ -118,13 +118,18 @@ Native QEMU touch tests now show app-to-Home navigation, the app switcher and
 top-right Control Center. Some swipe paths remain inconsistent and one leaves
 partially rendered Clock content. See [qemu-build57-gestures.json](qemu-build57-gestures.json).
 Image47 carries the four UI properties with the same kernel57/helper6. It is
-installed and fully readback verified; physical gesture validation is pending.
+installed and fully readback verified. Capture44 now contains a visible physical
+Home screen with icons, dock, wallpaper and widgets; the user reports working
+touch, and retained events reach apps and system gestures. This does not yet
+validate every bottom-edge gesture path.
+See [physical-build47-capture44.json](physical-build47-capture44.json).
 See [physical-build47-trial.json](physical-build47-trial.json).
 
 The phone has 6 GiB of DRAM; the current admitted VM range is about 3838 MiB.
 Full RAM reclamation, coordinated performance/voltage control, complete charging
-and fuel-gauge policy remain open work. The inherited charger state is not
-evidence of a complete charging implementation. Existing physical input
+and fuel-gauge policy remain open work. Capture44 finds no published battery service and no valid gauge measurements,
+explaining the empty icon. The PSC charger reports charging (status0x10), but
+this is not a current measurement or a complete native charging policy. Existing physical input
 observations cover touch and all three power/volume buttons.
 
 Native Wi-Fi integration targets the stock CONSYS_6765/CONNAC soc1_0 AXI-DMA
@@ -134,6 +139,17 @@ The existing HakiOS station/network interface can be reused above a new
 MediaTek connectivity backend.
 
 The profile scripts build local artifacts and run emulator trials. They do not
-flash the phone. Image47/kernel57/helper6 is installed with a verified
-full boot-partition readback. The physical trials use a separate guarded
+flash the phone. Image50/kernel58/helper6 is now installed with a verified
+full boot-partition readback; physical execution is pending. The physical trials use a separate guarded
 installer and retained-log reader with manual Power-button restarts.
+
+The native connectivity work now includes stock firmware/calibration parsers,
+WMT/STP framing and a bounded BTIF PIO query transport, a reset-held CONN power
+core, and a live-FDT memory planner. Host tests pass; these components have not
+yet brought up the physical radio. Image49 is staged with a read-only
+connectivity survey and the D22 `thin-bezel` property, but is not installed.
+Image50 supersedes that staged candidate. Kernel58 adds a recurring native
+battery observer and optional coherent current/Coulomb samples. Charger
+control and remaining percentage are still unavailable. The180-second QEMU
+boot and host suites pass; see [validation-build58.json](validation-build58.json)
+and [physical-build50-trial.json](physical-build50-trial.json).

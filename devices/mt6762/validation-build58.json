@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "kernel": "kernel58",
+  "kernel_sha256": "0b0c4d8f28ccb96bf2779f13345c447acfd9892b3dd4e58d8a1695ca5a299293",
+  "source_checkpoint": "fcdd11d63fe222354c6dc83450a174d8732e92f6",
+  "source_delta_reproduced": true,
+  "kernel_all_checks_passed": true,
+  "qemu_180_second_smoke": {
+    "passed": true,
+    "missing_markers": [],
+    "secondary_cpus_online": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "missing_secondary_cpus": [],
+    "errors": [],
+    "desktop_proven": false,
+    "physical_hardware_tested": false,
+    "capture_exit_code": 0,
+    "kernel_sha256": "0b0c4d8f28ccb96bf2779f13345c447acfd9892b3dd4e58d8a1695ca5a299293",
+    "serial_sha256": "1c7d141083d77c131afea6d7c5fea0ee64a27206b3384bb9dac6376c020f62f3",
+    "original_system_unchanged": true,
+    "helper_root_unchanged": true,
+    "fixture_unchanged": true
+  },
+  "host_checks": {
+    "power": "PASS: actual battery observer272WACSfaults/16configmutations/70expirypositions; actual repeatedPSCplatformpolicy and gaugebridge; existing powerregressions",
+    "physical_packaging": "110 testsPASS,3optional skips",
+    "connectivity_parsers_wmt": "46 testsPASS",
+    "btif": "PIO and composed actualWMTtransportPASS",
+    "conn_memory": "20 testsPASS includingcapture40; separatecapture44replayPASS",
+    "conn_power": "101MMIO/102prerequisitefaultsites;freestandingAArch64PASS",
+    "conn_survey": "80faultsites/40registers2passes;actualWACSreadcommands/freestandingAArch64PASS"
+  },
+  "limits": [
+    "Physical inherited battery observer not exercised by synthetic QEMU power model; pending nextcapture.",
+    "No SOC/remaining capacity measurement or complete charging policy yet.",
+    "Connectivity primitives do not establish active Wi-Fi."
+  ]
+}

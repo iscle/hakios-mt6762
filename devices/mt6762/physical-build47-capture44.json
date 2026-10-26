@@ -1,0 +1,63 @@
+{
+  "format": 1,
+  "image": "Image47/normal39/kernel57/helper6",
+  "capture": "capture44",
+  "trace_identity": "02e13c1a40c5bdacf18c543a07bd5194a63d1bfbf9067db0e08135774b457624",
+  "log_ordered_sha256": "4eb9b9fb33eca61b4e852a257ac17160e117646c6e6140711fca13fd51279f2d",
+  "framebuffer_sha256": "c3588a85d2ff442233b2631984dd45b02d25e03df2a969e9bb2145dde6957ab7",
+  "framebuffer_png_sha256": "92f625005c46b444077c5ef93eb7f4349ef3bfac7e64c20d557654238f459b41",
+  "physical_graphical_ui_proven": true,
+  "physical_home_screen_pixels_observed": true,
+  "framebuffer": "Home screen with wallpaper, icons, dock and widgets; empty battery icon",
+  "user_observation": "Touch works; battery empty and not charging in UI",
+  "system_shell_finished_startup": true,
+  "finished_startup_first_observed_seconds": 172.907327,
+  "touch_contact_down_count": 26,
+  "touch_contact_up_count": 26,
+  "system_gesture_routing_observed": true,
+  "battery": {
+    "power_source_count": 0,
+    "probe_iterations": 12,
+    "power_valid": 0,
+    "gauge_current_valid": 0,
+    "gauge_charge_valid": 0,
+    "adc_voltage_requests": 0,
+    "psc_identity": "f0",
+    "psc_control": "f8",
+    "psc_status": "10",
+    "read_successes": 6,
+    "charger_reports_charging": true,
+    "charging_current_measured": false,
+    "soc_available": false
+  },
+  "limits": [
+    "Retained log includes first256KiB and last1MiB; middle records can be lost.",
+    "Frame and userspace touch events establish physical desktop and input, not every gesture path.",
+    "Charger status is not a current measurement or a complete native charging-control implementation."
+  ],
+  "cpu_gic_initialized": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "windowserver_ready_seconds": 60.129741,
+  "cpus_online": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "touch_destinations": [
+    "com.apple.Preferences",
+    "com.apple.mobilecal"
+  ],
+  "system_shell_finished_startup_seconds": 172.89369
+}
