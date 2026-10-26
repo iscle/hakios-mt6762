@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "image": "Image45/normal37/kernel57/helper6",
+  "normal_sha256": "bc1897aa5142cbc69dd14d50251de133de52f3ca0bcd861089543dbf17954268",
+  "raw_sha256": "e6d84ada8b2692c1eae1a8e6b43ee8beae103d6b87d7ed073948a8fad8975064",
+  "kernel_sha256": "fb484061d76d4cabfa0316575f0cff46f9bd8df8cd252ed3612d1eefee6035e8",
+  "helper_sha256": "26969340a9d5305456c5474d50c314b53507d0548e7e3136a8a3392c6d38667f",
+  "physical_manifest_sha256": "172d7a72f7f16c75f0f23b8b29de8b406c24861cecba2d1290ac9bb3dc2621f9",
+  "trace_identity": "aef5d4e8477cca5203bac5bfc0bb9d983439823614eeee22fddc1578a7d074af",
+  "change": "Publish explicit factory Wi-Fi MAC as six raw chosen/mac-address-wifi0 bytes; kernel/helper unchanged",
+  "source_record": "Original nvdata.bin /APCFG/APRDEB/WIFI, bytes4..9, BSP CFG_Wifi_File.h WIFI_CFG_PARAM_STRUCT",
+  "source_record_mac_disclosed": false,
+  "adt_comparison": "Only Wi-Fi property plus normal fresh random-seed differ from Image44",
+  "validation": {
+    "identity_smp_charger_producer_tests": "10 passed",
+    "normal_packaging_and_identity_tests": "9 tests,1 optional skip",
+    "normal_avb_verified": true,
+    "guarded_install_offline": "5 cases passed",
+    "capture_reader_offline": "3 negative cases passed",
+    "full_boot_readback_verified": true,
+    "preserved_partitions_unchanged": true
+  },
+  "physical_execution_proven": true,
+  "physical_desktop_proven": false,
+  "no_apple_binary_changes": true,
+  "network_driver_proven": false,
+  "install_result": "/home/iscle/mt6762-ios-port/hardware/normal-boot-20261025/upgrade33/install/result.json",
+  "limitations": [
+    "Full-duration physical retry pending",
+    "This supplies factory identity only; Wi-Fi hardware is not enabled"
+  ],
+  "physical_result": "capture39: lsd progresses beyond previous MobileGestalt wait; short130s attempt, home not reached"
+}

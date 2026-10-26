@@ -1,0 +1,53 @@
+{
+  "format": 1,
+  "capture": "capture39",
+  "image": "Image45/normal37/kernel57/helper6",
+  "log_sha256": "7cf6796ad8db7b8835b9b2173db2e992fcdd0046c1113b51141796dc782eea7e",
+  "log_bytes": 440051,
+  "trace_identity": "aef5d4e8477cca5203bac5bfc0bb9d983439823614eeee22fddc1578a7d074af",
+  "image_execution_proven": true,
+  "secondary_cpus_online": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "windowserver_seconds": 63.292106,
+  "last_timestamp_seconds": 130.660155,
+  "retained_log_may_be_incomplete": true,
+  "lsd_samples_read_totals": [
+    {
+      "calls": 1458,
+      "bytes": 5230582,
+      "read_ms": 6669
+    },
+    {
+      "calls": 6212,
+      "bytes": 18299093,
+      "read_ms": 8011
+    },
+    {
+      "calls": 10698,
+      "bytes": 31645148,
+      "read_ms": 9337
+    }
+  ],
+  "lsd_sample_uptimes_ms": [
+    75337,
+    95370,
+    115376
+  ],
+  "lsd_other_threads_sampled": 8,
+  "lsd_MobileGestalt_frames": 0,
+  "lsd_worker_running_at75seconds": true,
+  "interpretation": "Factory Wi-Fi property removes previously sampled MG wait; lsd makes sustained progress reading app files. Short attempt ends before desktop; allow full-duration retry.",
+  "touch_reaches_backboardd": true,
+  "framebuffer_sha256": "e23f3394f8958c41dd2fbe85b3959f8f2529c47ba3290d7ecf61558b171fd00b",
+  "framebuffer_observation": "White Apple logo on black",
+  "physical_panel_logo_observed": false,
+  "physical_desktop_proven": false,
+  "next_trial": "Same installed image; six minutes before requesting capture40"
+}

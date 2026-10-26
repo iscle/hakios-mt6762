@@ -1,5 +1,48 @@
-Physical startup investigation, capture37
-=========================================
+Physical startup investigation, captures37 through39
+===================================================
+
+Capture38 measures the bulk-read fix on the phone: window-server readiness is
+62.674 seconds, versus 279.715 seconds in capture37. All eight physical cores
+start. Active transport throughput is 10.632 MiB/s (549,228,544 bytes over
+49.266 seconds), versus 1.529 MiB/s before. No storage admission error is
+recorded. After its 60-second transport sample, the controller spends only
+0.36% of the remaining measured interval reading. This is an observed physical
+before/after with different observer helpers, not a controlled benchmark.
+
+The remaining wait is now sampled directly. SpringBoard's main thread remains
+at the same LaunchServices lock from uptime73.989 to354.235 seconds, with
+unchanged CPU times. Its owner is thread476, Mach port0x200b, waiting for a
+synchronous XPC reply. In lsd, thread718 waits inside MobileGestalt at all three
+worker samples (75.025,135.074,195.095 seconds). The exact20F66 cache resolves
+this to ``WifiAddressData``: ``/chosen/mac-address-wifi0`` is missing, so it
+falls back to IONetworkController matching. The outer semaphore has no deadline.
+The notification worker uses repeated five-second runloop calls; the reason
+those did not complete the fallback is not yet established.
+
+The physical image producer deliberately stripped lab MAC/chip identities,
+but had not replaced the Wi-Fi property with this phone's factory value.
+QEMU retains its synthetic property and progresses past this query. The
+targeted correction accepts six raw factory MAC bytes as an explicit build
+input, validates them, and publishes OSData in the physical device tree.
+The existing factory dump provides the address in nvdata's
+``/APCFG/APRDEB/WIFI`` at offset4, matching the MediaTek BSP structure.
+This grants no network hardware access and does not establish a Wi-Fi driver.
+The raw factory address stays outside the public source/evidence repository.
+Removing only the Wi-Fi property in a separate360-second QEMU experiment
+reproduces all ten image-relative frames of both the physical waiter and its
+runloop worker. The positive reference has neither matching stack.
+
+Capture39 verifies Image45 execution with the factory Wi-Fi property. Its lsd
+worker is running, with no MobileGestalt frame in the sampled threads. Its
+read totals rise from5.23 to18.30 to31.65 MB across the first three samples,
+matching active app enumeration rather than the previous identity wait.
+The log ends at130.660 seconds after an early restart. Both captures38 and39
+contain the Apple logo in the framebuffer, not home; panel visibility at the
+capture instant is unconfirmed. A full-duration retry of the same image is
+required to determine whether SpringBoard finishes startup.
+
+Original baseline
+-----------------
 
 Image43/kernel56/helper2 starts all eight physical cores. Its retained log
 reports window-server readiness at 279.715 seconds and the SpringBoard shell
@@ -22,7 +65,7 @@ message is at 287.231 seconds. Storage activity drops sharply after roughly
 360 seconds, yet the captured UI has not reached home by about 797 seconds.
 The successful kernel56 emulator run pauses at the same SpringBoard milestone
 for approximately 241 seconds, then proceeds. Subsequent emulator samples locate
-that wait in LaunchServices; the physical wait still needs its own stack.
+that wait in LaunchServices. Capture38 supplies the physical stack above.
 
 Implemented and tested
 ----------------------
@@ -75,6 +118,10 @@ success. ``qemu-build57-bulk.json`` binds the new emulator comparison and observ
 trial. The private binary analysis is under
 ``hardware/hakios-migration-20261026/launchservices-wait``. Bulk-PIO host evidence
 lives in the nested kernel's
-``tools/mt6762/hardware/storage/bulk-pio-evidence.json``. A new physical trial
-and its retained logs are required before claiming a boot-time improvement
-or a working home screen on this phone.
+``tools/mt6762/hardware/storage/bulk-pio-evidence.json``.
+``physical-build44-capture38.json`` binds the physical storage improvement and
+remaining MobileGestalt wait. Exact binary analysis is retained privately in
+``hardware/hakios-migration-20261026/mobilegestalt-wait38``.
+``qemu-no-wifi-identity.json`` records the one-property reproduction;
+``physical-build45-capture39.json`` records physical progress after correction.
+A full-duration physical trial remains necessary before claiming home.

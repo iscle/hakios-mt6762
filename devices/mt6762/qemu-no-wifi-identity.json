@@ -1,0 +1,234 @@
+{
+  "format": 1,
+  "scope": "Isolated QEMU identity-property differential against retained physical capture38",
+  "physical_hardware_tested_by_this_run": false,
+  "source_change_scope": "This compact evidence JSON only; run wrapper and outputs are private boot artifacts.",
+  "conclusion": "Removing only chosen/mac-address-wifi0 reproduces the physical lsd WifiAddressData fallback waiter and runloop worker with identical ten-frame image-relative stacks.",
+  "mutation": {
+    "removed_property": "/device-tree/chosen/mac-address-wifi0",
+    "reference_random_seed_reused": true,
+    "unique_chip_id_preserved": true,
+    "bluetooth_identity_preserved": true,
+    "real_factory_mac_included": false,
+    "adt_bytes_before": 18992,
+    "adt_bytes_after": 18948,
+    "boot_args_changed_offsets": [
+      104
+    ],
+    "qemu_command_same_except_private_payload_paths": true
+  },
+  "kernel_sha256": "fb484061d76d4cabfa0316575f0cff46f9bd8df8cd252ed3612d1eefee6035e8",
+  "helper_root_sha256": "26969340a9d5305456c5474d50c314b53507d0548e7e3136a8a3392c6d38667f",
+  "system_sha256": "9329e9c9bf46d6890798bb15d0d0036ec8c9235abf7d77edbacdd346992454a0",
+  "read_only_emmc_sha256": "7ac6f98f6f2fcdfe5973c0ce4f9dd3e6bcc2c4846124dd6d5e86362583e2b457",
+  "qemu_sha256": "d8fca3571d2556e7ec4ca142a3d8fb0f877333cbae66bc32e7c9fba9dbbefa12",
+  "positive_reference_seconds": 200,
+  "negative_trial_seconds": 360,
+  "capture_exit_code": 0,
+  "shared_inputs_unchanged": true,
+  "identical_payload_files": [
+    "framebuffer.bin",
+    "ramdisk-0.bin",
+    "segment-00.bin",
+    "segment-01.bin",
+    "segment-02.bin",
+    "segment-03.bin",
+    "segment-04.bin",
+    "segment-06.bin",
+    "segment-07.bin",
+    "segment-08.bin",
+    "segment-16.bin",
+    "segment-17.bin",
+    "trampoline.Image"
+  ],
+  "network_device_scope": "No network-device option appears in the command, and reviewed mt6762 machine init/class code creates no NIC.",
+  "exact_stack_frame_count": 10,
+  "waiter_normalized_stack": [
+    [
+      "libsystem_kernel.dylib",
+      "0xf6c"
+    ],
+    [
+      "libdispatch.dylib",
+      "0x4508"
+    ],
+    [
+      "libdispatch.dylib",
+      "0x4b64"
+    ],
+    [
+      "libMobileGestalt.dylib",
+      "0x276e4"
+    ],
+    [
+      "libMobileGestalt.dylib",
+      "0x27910"
+    ],
+    [
+      "libMobileGestalt.dylib",
+      "0x27320"
+    ],
+    [
+      "libMobileGestalt.dylib",
+      "0x21214"
+    ],
+    [
+      "libMobileGestalt.dylib",
+      "0x1908"
+    ],
+    [
+      "libMobileGestalt.dylib",
+      "0x142e8"
+    ],
+    [
+      "libMobileGestalt.dylib",
+      "0x1908"
+    ]
+  ],
+  "runloop_normalized_stack": [
+    [
+      "libsystem_kernel.dylib",
+      "0xff0"
+    ],
+    [
+      "libsystem_kernel.dylib",
+      "0x12ad8"
+    ],
+    [
+      "libsystem_kernel.dylib",
+      "0x12d78"
+    ],
+    [
+      "libsystem_kernel.dylib",
+      "0x14e4"
+    ],
+    [
+      "CoreFoundation",
+      "0x741c8"
+    ],
+    [
+      "CoreFoundation",
+      "0x75360"
+    ],
+    [
+      "CoreFoundation",
+      "0x79da0"
+    ],
+    [
+      "libMobileGestalt.dylib",
+      "0x27780"
+    ],
+    [
+      "libdispatch.dylib",
+      "0x637a8"
+    ],
+    [
+      "libdispatch.dylib",
+      "0x64780"
+    ]
+  ],
+  "observations": {
+    "physical_capture38": {
+      "serial_path": "hardware/trace-boot-20261025/capture38/xnu-log.bin",
+      "serial_sha256": "11691789fd9942fd6c32e25cded59f3557d0de99b5180061ddfe4d7c6cc45ea0",
+      "serial_bytes": 673619,
+      "sampled_lsd_threads": 40,
+      "last_sample_uptime_ms": 355137,
+      "wifi_waiter_samples": [
+        {
+          "sample": 0,
+          "tid": 718,
+          "uptime_ms": 75025
+        },
+        {
+          "sample": 3,
+          "tid": 718,
+          "uptime_ms": 135074
+        },
+        {
+          "sample": 6,
+          "tid": 718,
+          "uptime_ms": 195095
+        }
+      ],
+      "wifi_runloop_samples": [
+        {
+          "sample": 0,
+          "tid": 727,
+          "uptime_ms": 75045
+        },
+        {
+          "sample": 3,
+          "tid": 717,
+          "uptime_ms": 135073
+        },
+        {
+          "sample": 6,
+          "tid": 727,
+          "uptime_ms": 195100
+        }
+      ],
+      "kernel_panic_observed": false,
+      "msdc_terminal_error_observed": false
+    },
+    "positive_wifi_identity": {
+      "serial_path": "boot/native-desktop-build57/desktop-lockowner-smp8/payload/smoke.serial.log",
+      "serial_sha256": "8a575c1af931bac89250aef972ea9abd0e714bfbac6af2406e1e3ec97d3908d3",
+      "serial_bytes": 802780,
+      "sampled_lsd_threads": 25,
+      "last_sample_uptime_ms": 183015,
+      "wifi_waiter_samples": [],
+      "wifi_runloop_samples": [],
+      "kernel_panic_observed": false,
+      "msdc_terminal_error_observed": false
+    },
+    "negative_no_wifi_identity": {
+      "serial_path": "boot/native-desktop-build57/desktop-no-wifi-identity-smp8/payload/no-wifi.serial.log",
+      "serial_sha256": "f6e50a58a80b24edc3397bb5323505d66739b7d687aecc9ff775296322e1c62c",
+      "serial_bytes": 767376,
+      "sampled_lsd_threads": 41,
+      "last_sample_uptime_ms": 358908,
+      "wifi_waiter_samples": [
+        {
+          "sample": 3,
+          "tid": 561,
+          "uptime_ms": 118632
+        },
+        {
+          "sample": 6,
+          "tid": 561,
+          "uptime_ms": 178746
+        }
+      ],
+      "wifi_runloop_samples": [
+        {
+          "sample": 3,
+          "tid": 846,
+          "uptime_ms": 118679
+        },
+        {
+          "sample": 6,
+          "tid": 846,
+          "uptime_ms": 178776
+        }
+      ],
+      "kernel_panic_observed": false,
+      "msdc_terminal_error_observed": false
+    }
+  },
+  "final_negative_framebuffer": "Apple logo on black background, no desktop observed",
+  "private_evidence": {
+    "boot/native-desktop-build57/desktop-no-wifi-identity-smp8/run-inputs.json": "de84162525c47e21dda89ceaaef758fa7abcb180f02beebbfb0222ea3644ca11",
+    "boot/native-desktop-build57/desktop-no-wifi-identity-smp8/comparison.json": "fe96956b5cdd3ee19bc54b51f46e72a250dc172cad5b9c78874d2fc874e9db16",
+    "boot/native-desktop-build57/desktop-no-wifi-identity-smp8/verification.json": "fe62ea64c8601f4a03a2dbeb5947ea70bb6fc095f063667d200ce9e4bb26a65d",
+    "boot/native-desktop-build57/desktop-no-wifi-identity-smp8/adt-mutation.json": "d139b4d0bd3eef54aac03de4b715117b9eb0619ad2ad975fb6d8a1996e442ee7",
+    "boot/native-desktop-build57/desktop-no-wifi-identity-smp8/prepare_without_wifi.py": "47a61426f0a52efe62a2b7489281383d13a1557e43687edc7df072de1997f1ae",
+    "boot/native-desktop-build57/desktop-no-wifi-identity-smp8/payload/no-wifi.png": "860982503fbd9641439683dc421b082a9964156d6f57e72f435ddb246aa7f57b"
+  },
+  "limits": [
+    "Finite non-atomic samples do not prove the same worker stayed blocked after its last sample.",
+    "No physical fix result is claimed; parent manages that independent trial.",
+    "Positive reference lasted200s and negative360s; the longer separate helper4 desktop test is not treated as an identical control.",
+    "This reproduces a userspace fallback and does not prove Wi-Fi hardware support or explain the runloop timeout behavior."
+  ]
+}

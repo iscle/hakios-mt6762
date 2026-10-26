@@ -76425,10 +76425,10 @@ index 0000000000000000000000000000000000000000..e8315207b45a1c4528a7eb98a342ec8b
 +    main()
 diff --git a/tools/mt6762/physical/build_normal_trial.py b/tools/mt6762/physical/build_normal_trial.py
 new file mode 100644
-index 0000000000000000000000000000000000000000..e8f9bafc33fba64f58239f9f08e1fed64e9e51d2
+index 0000000000000000000000000000000000000000..409c2584c1e29ec8159712dee8e1e6bf97a80a77
 --- /dev/null
 +++ b/tools/mt6762/physical/build_normal_trial.py
-@@ -0,0 +1,184 @@
+@@ -0,0 +1,185 @@
 +#!/usr/bin/env python3
 +"""Package an explicitly frozen diagnostic for the exact32MiB normal boot slot.
 +
@@ -76480,6 +76480,7 @@ index 0000000000000000000000000000000000000000..e8f9bafc33fba64f58239f9f08e1fed6
 +    'ada26d13744a70201472725f0c25e506e429fee3db49abd6f28be9dcd11308f5', # Image42: HakiOS kernel56/helper2; existing two-core handoff, first-frame console release
 +    '0dc5ee9810ac8cc48b4e80e084e62e8f465c7695a1e5e935e1e9f1c375372523', # Image43: same HakiOS kernel56/helper2 with all eight cores requested
 +    '6d41a34328a603f960ef7c32dab5fd581f22db73db713e7c0f6f451ed32b4bde', # Image44: kernel57 bulk PIO, helper6 startup/LaunchServices observations, eight cores
++    'e6d84ada8b2692c1eae1a8e6b43ee8beae103d6b87d7ed073948a8fad8975064', # Image45: same kernel57/helper6, factory Wi-Fi identity handoff for MobileGestalt
 +)
 +VBMETA_FLAGS3 = '2f3fb6474d7ff35ac4c48ab2bef71247ba50de4a94de2474b7d1b60cd6654f51'
 +
@@ -76615,10 +76616,10 @@ index 0000000000000000000000000000000000000000..e8f9bafc33fba64f58239f9f08e1fed6
 +    main()
 diff --git a/tools/mt6762/physical/build_payload.py b/tools/mt6762/physical/build_payload.py
 new file mode 100644
-index 0000000000000000000000000000000000000000..e3653691dfbaf744c6ac6e7ba8ff509c61fe518d
+index 0000000000000000000000000000000000000000..3f9d16e7ccbadd58791ca8ba6025bcb327b0e94e
 --- /dev/null
 +++ b/tools/mt6762/physical/build_payload.py
-@@ -0,0 +1,486 @@
+@@ -0,0 +1,510 @@
 +#!/usr/bin/env python3
 +"""Build a physical XNU diagnostic or eMMC desktop bootstrap; no device commands."""
 +import argparse
@@ -76672,6 +76673,22 @@ index 0000000000000000000000000000000000000000..e3653691dfbaf744c6ac6e7ba8ff509c
 +def encode_adt(tree):
 +    return prepare.node(tree['name'], list(tree['props'].items()),
 +                        [encode_adt(child) for child in tree['children']])
++
++
++def physical_identity(chosen, wifi_mac=None):
++    """Discard lab identities; optionally publish this phone's raw factory MAC.
++
++    MobileGestalt's WifiAddressData reads this OSData before falling back to
++    waiting for IONetworkController. This property grants no network hardware
++    ownership and does not imply that a Wi-Fi driver exists.
++    """
++    if wifi_mac is not None and (len(wifi_mac) != 6 or wifi_mac == bytes(6)
++                                 or wifi_mac[0] & 1):
++        raise ValueError('Wi-Fi identity must be six raw, nonzero unicast MAC bytes')
++    for key in ('unique-chip-id', 'mac-address-wifi0', 'mac-address-bluetooth0'):
++        chosen.pop(key, None)
++    if wifi_mac is not None:
++        chosen['mac-address-wifi0'] = wifi_mac
 +
 +
 +CHARGER_SETUP_FLAGS = ('dma-direct','i2c-pads-verified','i2c5-verified',
@@ -76756,6 +76773,8 @@ index 0000000000000000000000000000000000000000..e3653691dfbaf744c6ac6e7ba8ff509c
 +                        help='require measured LK display/PWM admission and emit its native handoff')
 +    parser.add_argument('--cpus',type=int,choices=(1,2,4,8),default=1,
 +                        help='requires exact live PSCI/A53 topology and reviewed kernel for2/4/8; default1')
++    parser.add_argument('--wifi-mac-file', type=Path,
++                        help='six raw factory Wi-Fi MAC bytes from this phone; never a lab/donor address')
 +    parser.add_argument('--brightness-pulse', action='store_true',
 +                        help='opt in to the kernel dim/restore diagnostic before PID1')
 +    parser.add_argument('--probe-peripherals', action='store_true',
@@ -76796,6 +76815,8 @@ index 0000000000000000000000000000000000000000..e3653691dfbaf744c6ac6e7ba8ff509c
 +    if args.bootstrap_apfs and not (args.native_msdc_probe and args.expand_memory and args.refresh_watchdog):
 +        parser.error('desktop bootstrap requires native MSDC, expanded memory and watchdog servicing')
 +    ios_slice = desktop_ramdisk.validate_slice(*args.ios_system_slice) if args.ios_system_slice else None
++    wifi_mac = args.wifi_mac_file.read_bytes() if args.wifi_mac_file else None
++    physical_identity({}, wifi_mac)  # Reject malformed input before creating output.
 +    out = args.out.resolve()
 +    if out.exists():
 +        parser.error('output must be new')
@@ -76865,8 +76886,7 @@ index 0000000000000000000000000000000000000000..e3653691dfbaf744c6ac6e7ba8ff509c
 +    if args.bootstrap_apfs:
 +        chosen['props']['firmware-version'] = b'mt6762-physical-desktop-bootstrap\0'
 +    chosen['props']['boot-manifest-hash'] = hashlib.sha384(kernel).digest()
-+    for key in ('unique-chip-id', 'mac-address-wifi0', 'mac-address-bluetooth0'):
-+        chosen['props'].pop(key, None)
++    physical_identity(chosen['props'], wifi_mac)
 +    native_flags = ('native-io','display-verified','display-reserved','display-dma-physical',
 +        'display-pipeline-verified','brightness-verified','brightness-pins-verified','brightness-parent-verified')
 +    if args.native_display:
@@ -77045,11 +77065,16 @@ index 0000000000000000000000000000000000000000..e3653691dfbaf744c6ac6e7ba8ff509c
 +    sources_after = {os.path.relpath(p,HERE.parent):sha(p.read_bytes()) for p in source_paths}
 +    if sources_before != sources_after or template_sha != sha(args.template.read_bytes()):
 +        raise ValueError('build inputs changed during compilation; discard candidate')
++    if args.wifi_mac_file and args.wifi_mac_file.read_bytes() != wifi_mac:
++        raise ValueError('factory Wi-Fi identity changed during compilation; discard candidate')
 +    report=dict(format=1,purpose=('Physical XNU bootstrap for existing iOS system slice' if ios_slice else
 +                                'Temporary physical XNU diagnostic, not full iOS userspace'),
 +        kernel_sha256=sha(original_kernel),diagnostic_sha256=sha(original_diagnostic),
 +        root_payload=dict(root_info,sha256=sha(original_diagnostic)),ios_system_slice=ios_slice,
 +        template_sha256=template_sha,source_sha256=sources_before,source_inputs_stable=True,
++        wifi_identity=(dict(source_file=str(args.wifi_mac_file.resolve()),
++                           sha256=sha(wifi_mac), bytes=6, property='mac-address-wifi0',
++                           network_driver_proven=False) if wifi_mac is not None else None),
 +        tool_sha256={name:sha((args.llvm/name).read_bytes()) for name in ('clang','ld.lld','llvm-objcopy')},
 +        blob_sha256={name:sha(data) for name,data in blobs.items()},image_sha256=sha(image_path.read_bytes()),
 +        image_bytes=image_path.stat().st_size,commands=commands,layout=constants,segments=segments,
@@ -104589,6 +104614,54 @@ index 0000000000000000000000000000000000000000..22b38248b27f87fcdbf7861859564483
 +
 +
 +if __name__ == '__main__': unittest.main()
+diff --git a/tools/mt6762/physical/test_factory_identity.py b/tools/mt6762/physical/test_factory_identity.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..d1b981507ba56deb930c469770da97963a43fa97
+--- /dev/null
++++ b/tools/mt6762/physical/test_factory_identity.py
+@@ -0,0 +1,42 @@
++#!/usr/bin/env python3
++"""Exercise actual physical ADT identity publication, never a device."""
++import unittest
++from build_payload import decode_adt, encode_adt, physical_identity
++
++
++class FactoryIdentityTests(unittest.TestCase):
++    def props(self):
++        return {'unique-chip-id': b'lab-chip', 'mac-address-wifi0': b'lab-wifi',
++                'mac-address-bluetooth0': b'lab-bt', 'unrelated': b'preserve'}
++
++    def test_absent_input_drops_lab_identities(self):
++        props = self.props()
++        physical_identity(props)
++        self.assertEqual(props, {'unrelated': b'preserve'})
++
++    def test_raw_bytes_survive_real_adt_roundtrip(self):
++        # Explicit synthetic fixture, not a production/default identity.
++        for value in (bytes.fromhex('001122334455'), bytes.fromhex('021122334455')):
++            props = self.props()
++            physical_identity(props, value)
++            tree = {'name': 'chosen', 'props': props, 'children': []}
++            blob = encode_adt(tree)
++            decoded, end, _ = decode_adt(blob)
++            self.assertEqual(end, len(blob))
++            self.assertEqual(decoded['props'], {'unrelated': b'preserve',
++                                               'mac-address-wifi0': value})
++
++    def test_bad_identity_rejected_without_mutating_tree(self):
++        bad = [bytes(n) for n in (0, 1, 5, 6, 7, 17)]
++        bad += [b'00:11:22:33:44:55', bytes.fromhex('ffffffffffff'),
++                bytes.fromhex('011122334455')]
++        for value in bad:
++            with self.subTest(value=value):
++                props = self.props()
++                with self.assertRaises(ValueError):
++                    physical_identity(props, value)
++                self.assertEqual(props, self.props())
++
++
++if __name__ == '__main__':
++    unittest.main()
 diff --git a/tools/mt6762/physical/test_fdt_handoff.py b/tools/mt6762/physical/test_fdt_handoff.py
 new file mode 100644
 index 0000000000000000000000000000000000000000..af8c8b3301045f460befcd913cb7a4efb9fd2df2
